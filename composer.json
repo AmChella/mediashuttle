@@ -1,0 +1,23 @@
+{
+    "name": "pocmedia/shuttle",
+    "description": "Library of media shuttle for copying and sharing files.",
+    "type": "library",
+    "require": {
+        "router/slim": "v0.0.6.5",
+        "symfony/yaml": "^5.4",
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pocmedia\\Shuttle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Chella S",
+            "email": "chellapandi.soundarapandian@amnet-systems.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

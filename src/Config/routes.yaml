@@ -1,0 +1,19 @@
+-
+  url: /{package_id}
+  method: post
+  invoke: package->create
+  return: json
+-
+  url: /{package_id}
+  method: get
+  routeBeforeInvoke:
+    - util->keys
+  invoke: package->reads
+  return: json
+-
+  url: /delete/{package_id}
+  method: get
+  routeBeforeInvoke:
+    - util->keys
+  invoke: package->delete
+  return: json
