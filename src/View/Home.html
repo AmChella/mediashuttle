@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>POC Page</title>
+    <style>
+      .row-download,
+      .row-upload {
+        padding-bottom: 1em;
+      }
+      .row-upload > div {
+        display: inline-block;
+      }
+      .row-download > div {
+        display: inline-block;
+      }
+
+      .upload {
+        background-color: cadetblue;
+        border: none;
+        width: fit-content;
+        padding: 0.5em;
+        cursor: pointer;
+      }
+      .download {
+        background-color: blue;
+        border: none;
+        width: fit-content;
+        padding: 0.5em;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>POC Page</h2>
+    <div class="row-upload">
+      <label>Path: <input type="text" name="path" /></label>
+      <div class="upload">upload</div>
+      <div class="response"></div>
+      <div class="packageId" style="display: none"></div>
+      <a href="http://" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+    <div class="row-download">
+      <label
+        >PackageId:
+        <input type="text" name="path" value="64Qe5d8KBFWKJQfonDbzT3"
+      /></label>
+      <div class="download">download</div>
+      <div class="response"></div>
+      <a href="http://" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+  </body>
+  <script>
+    const updatePackageId = (id) => {
+      let path = document.querySelector(".row-download input");
+      if (path) {
+        path.value = id;
+      }
+    };
+    const uploadPostProcess = (data) => {
+      const anchor = document.querySelector(".row-upload a");
+      const packageId = document.querySelector(".row-upload .packageId");
+      if (anchor) {
+        anchor.setAttribute("href", data.url);
+        anchor.textContent = data.packageId;
+        packageId.textContent = data.packageId;
+        updatePackageId(data.packageId);
+      }
+    };
+
+    const downloadPostProcess = (data) => {
+      const anchor = document.querySelector(".row-download a");
+      if (anchor) {
+        anchor.setAttribute("href", data.url);
+        anchor.textContent = data.packageId;
+      }
+    };
+
+    const upload = () => {
+      let path = document.querySelector(".row-upload input");
+      if (!path) {
+        alert("path not found");
+        console.error("path not found");
+        return;
+      }
+
+      if (path.value == "") {
+        alert("path is empty");
+        console.error("path is empty");
+        return;
+      }
+
+      let body = {
+        uploadDir: path.value,
+      };
+
+      fetch("/upload", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          uploadPostProcess(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+
+    const download = () => {
+      let path = document.querySelector(".row-download input");
+      if (!path) {
+        alert("packageId not found");
+        console.error("packageId not found");
+        return;
+      }
+
+      if (path.value == "") {
+        alert("packageId is empty");
+        console.error("packageId is empty");
+        return;
+      }
+
+      let body = {
+        packageId: path.value,
+      };
+
+      fetch("/download", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          downloadPostProcess(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+
+    const uploadEvent = document.querySelector(".row-upload .upload");
+    const downloadEvent = document.querySelector(".row-download .download");
+    // debugger;
+    if (uploadEvent) {
+      uploadEvent.addEventListener("click", upload);
+    }
+
+    if (downloadEvent) {
+      downloadEvent.addEventListener("click", download);
+    }
+  </script>
+</html>

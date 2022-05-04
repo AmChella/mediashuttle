@@ -4,7 +4,7 @@ namespace Pocmedia\Shuttle\Util;
 use Exception;
 
 use Symfony\Component\Yaml\Yaml;
-use Pocmedia\Shuttle\Service\Package;
+use Pocmedia\Shuttle\Service\{Package, Home};
 use Pocmedia\Shuttle\Util\Util;
 use Pocmedia\Shuttle\Exception\AppInitializerException;
 
@@ -36,7 +36,7 @@ class App {
     public function setup() {
         $resources = [];
         $resources['config'] = function() {
-            return Yaml::parseFile(__DIR__ . "/../Config/Config.yaml");
+            return Yaml::parseFile(__DIR__ . "/../Config/config.yaml");
         };
 
         $resources['router'] = function() {
@@ -49,6 +49,10 @@ class App {
 
         $resources['package'] = function() use($resources) {
             return new Package(call_user_func($resources['config']));
+        };
+
+        $resources['home'] = function() use($resources) {
+            return new Home(call_user_func($resources['config']));
         };
 
         $this->resources = $resources;

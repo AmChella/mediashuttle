@@ -1,19 +1,16 @@
--
-  url: /{package_id}
+- url: /upload
   method: post
-  invoke: package->create
-  return: json
--
-  url: /{package_id}
-  method: get
   routeBeforeInvoke:
     - util->keys
-  invoke: package->reads
+  invoke: package->upload
   return: json
--
-  url: /delete/{package_id}
-  method: get
+- url: /download
+  method: post
   routeBeforeInvoke:
     - util->keys
-  invoke: package->delete
+  invoke: package->download
   return: json
+- url: /
+  method: get
+  invoke: home->homePage
+  return: raw
