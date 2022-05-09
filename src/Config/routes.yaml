@@ -10,6 +10,12 @@
     - util->keys
   invoke: package->download
   return: json
+- url: /create
+  method: post
+  routeBeforeInvoke:
+    - util->keys
+  invoke: package->create
+  return: json
 - url: /
   method: get
   invoke: home->homePage

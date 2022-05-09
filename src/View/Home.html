@@ -7,13 +7,14 @@
     <title>POC Page</title>
     <style>
       .row-download,
-      .row-upload {
+      .row-upload,
+      .row-create {
         padding-bottom: 1em;
       }
-      .row-upload > div {
-        display: inline-block;
-      }
-      .row-download > div {
+
+      .row-upload > div,
+      .row-upload > div,
+      .row-create > div {
         display: inline-block;
       }
 
@@ -31,10 +32,54 @@
         padding: 0.5em;
         cursor: pointer;
       }
+
+      .create {
+        background-color: rgb(19, 139, 14);
+        border: none;
+        width: fit-content;
+        padding: 0.5em;
+        cursor: pointer;
+      }
+      /* body {
+        background: #eee;
+        height: 100vh;
+        display: flex;
+        overflow: hidden;
+      } */
+      .spinner {
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        left: 30em;
+        border-top: 0.5em solid #6da9f5;
+        border-right: 0.5em solid transparent;
+        border-radius: 50%;
+        margin: auto;
+        animation: spinner 0.6s linear infinite;
+      }
+      .head {
+        width: 0.4em;
+        height: 0.4em;
+        background-color: #6da9f5;
+        border-radius: 50%;
+        margin-left: 2.5em;
+        margin-top: 0.5em;
+      }
+      @keyframes spinner {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .hide {
+        display: none;
+      }
     </style>
   </head>
   <body>
     <h2>POC Page</h2>
+    <div class="spinner hide" style="font-size: 18px">
+      <div class="head"></div>
+    </div>
     <div class="row-upload">
       <label>Path: <input type="text" name="path" /></label>
       <div class="upload">upload</div>
@@ -42,17 +87,24 @@
       <div class="packageId" style="display: none"></div>
       <a href="http://" target="_blank" rel="noopener noreferrer"></a>
     </div>
+    <!-- <div class="row-create">
+      <div class="create">create</div>
+      <div class="response"></div>
+      <a class="packageId" style="display: none"></a>
+    </div> -->
     <div class="row-download">
       <label
         >PackageId:
-        <input type="text" name="path" value="64Qe5d8KBFWKJQfonDbzT3"
+        <input type="text" name="packageId" value="64Qe5d8KBFWKJQfonDbzT3"
       /></label>
+      <label>path: <input type="text" name="path" value="" /></label>
       <div class="download">download</div>
       <div class="response"></div>
       <a href="http://" target="_blank" rel="noopener noreferrer"></a>
     </div>
   </body>
   <script>
+    const loader = document.querySelector(".spinner");
     const updatePackageId = (id) => {
       let path = document.querySelector(".row-download input");
       if (path) {
@@ -67,6 +119,12 @@
         anchor.textContent = data.packageId;
         packageId.textContent = data.packageId;
         updatePackageId(data.packageId);
+      }
+    };
+
+    const loaderFun = () => {
+      if (loader) {
+        loader.classList.toggle("hide");
       }
     };
 
@@ -92,6 +150,7 @@
         return;
       }
 
+      loaderFun();
       let body = {
         uploadDir: path.value,
       };
@@ -105,29 +164,36 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          loaderFun();
           uploadPostProcess(data);
         })
         .catch((error) => {
+          loaderFun();
           console.error("Error:", error);
         });
     };
 
     const download = () => {
-      let path = document.querySelector(".row-download input");
-      if (!path) {
+      let package = document.querySelector(
+        ".row-download input[name='packageId']"
+      );
+      let path = document.querySelector(".row-download input[name='path']");
+      if (!package) {
         alert("packageId not found");
         console.error("packageId not found");
         return;
       }
 
-      if (path.value == "") {
+      if (package.value == "") {
         alert("packageId is empty");
         console.error("packageId is empty");
         return;
       }
 
+      loaderFun();
       let body = {
-        packageId: path.value,
+        packageId: package.value,
+        dirName: path && path.value != "" ? path.value : "",
       };
 
       fetch("/download", {
@@ -139,15 +205,45 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          loaderFun();
           downloadPostProcess(data);
         })
         .catch((error) => {
+          loaderFun();
+          console.error("Error:", error);
+        });
+    };
+
+    const createPostProcess = (data) => {
+      const anchor = document.querySelector(".row-create a");
+      if (anchor) {
+        anchor.textContent = data.id;
+      }
+    };
+
+    const create = () => {
+      loaderFun();
+      fetch("/create", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: "",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          loaderFun();
+          createPostProcess(data);
+        })
+        .catch((error) => {
+          loaderFun();
           console.error("Error:", error);
         });
     };
 
     const uploadEvent = document.querySelector(".row-upload .upload");
     const downloadEvent = document.querySelector(".row-download .download");
+    const createEvent = document.querySelector(".row-create .create");
     // debugger;
     if (uploadEvent) {
       uploadEvent.addEventListener("click", upload);
@@ -155,6 +251,10 @@
 
     if (downloadEvent) {
       downloadEvent.addEventListener("click", download);
+    }
+
+    if (createEvent) {
+      createEvent.addEventListener("click", create);
     }
   </script>
 </html>

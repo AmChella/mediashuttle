@@ -61,6 +61,10 @@ class Package {
         return \json_decode($body, true);
     }
 
+    public function create(Array $request): Array {
+        return $this->createPackage($request);
+    }
+
     public function download(Array $request): Array {
         $headers = ['Authorization' => $request['keys']['api_key'], 'Content-Type' => 'application/json'];
         $uri = sprintf("%s/%s/%s",
@@ -83,6 +87,9 @@ class Package {
                 ]
             ]
         ];
+        // if (isset($request['data']['dirName']) && empty($request['data']['dirName']) === false) {
+        //     $reqBody["destinationPath"] = $request['data']['dirName'];
+        // }
         // return $reqBody;
         try {
 
@@ -91,7 +98,7 @@ class Package {
             $body = \json_decode($body, true);
         } 
         catch (ClientException $e) {
-            throw new Exception(Psr7\Message::toString($e->getResponse()));
+            throw new \Exception(Psr7\Message::toString($e->getResponse()));
         }
         $body['packageId'] = $request['data']['packageId'];
         return $body;
