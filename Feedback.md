@@ -1,25 +1,85 @@
 ## POC - Media Shuttle
 
 ## Overview
+---
 
-The **Ames smart flow process** automation, Planned directory structuring, API integration, and download-upload process automation. we were initially planned with _` S3`_ storage for upload and download and the process should be faster than we have in the system. As the discussion with the IT team, they have informed the media shuttle storage system. It supports LocalFileSystem and cloud services as well as is cost-effective.
+**AmES smartflow** automation requires a common datastore (S3 or Shared File System). Interaction with this data store is paramount for its success. We need auto file copy when user travels between processes, file/folder level permission control, upload/download while working on a specific task in the workflow. S3 as a datastore was ruled out due to high cost of operation, although its a lot faster than local file copy over network. Mediashuttle (MS) along with network file copy is being used by production users. It supports LocalFileSystem and cloud services and it accelarates file copy over the netowrk. In this exercise, we will test if MS is faster than local file copy over the network. We will also test out MS's Restful APIs.
 
-## Areas to test
+## Areas tested
+---
 
-1. able to upload files and folders by manual
-2. able to download files and folders by manual
-3. able to upload files and folders by automation
-4. able to download files and folders by automation
-5. able to do versioning on each upload either manual or automation
-6. able to check upload process completion state
-7. able to copy/move files or folders one to another
-8. able to transfer file within system through REST API
-9. able to register a user/email through REST API
-10. able to check history of package id through REST API
-11. able to check current active transfers through REST API
-12. able to create a new portal through REST
-13. able to set user rols or persmission
+1. upload files and folders manually
+2. download files and folders manually
+3. upload files and folders through MS restful API integration
+4. download files and folders through MS restful API integration
+5. versioning of files on each upload
+6. track upload/download progress through MS API 
+7. copy/move files or folders as a background activity through MS API
+8. transfer file within system through MS REST API
+9. register a user/email through MS REST API
+1. check history of a package id through MS REST API
+1. check current active transfers through MS REST API
+1. create a new portal through MS REST API
+1. set user roles or persmission through MS
+1. storage replication/backup feature 
 
+## Result
+---
+
+| S.No | Task                                                             | Status    |
+| ---- | ---------------------------------------------------------------- | --------- |
+|1. |upload files and folders manually | **Yes**
+|2. |download files and folders manually|**Yes**
+|3. |upload files and folders through MS restful API integration|**`No`**
+|4. |download files and folders through MS restful API integration|**`No`**
+|5. |versioning of files on each upload|**`No`**
+|6. |track upload/download progress through MS API |**Yes**
+|7. |copy/move files or folders as a background activity through MS API|**`No`**
+|8. |transfer file within system through MS REST API|**`No`**
+|9. |register a user/email through MS REST API|**Yes**
+|10.| check history of a package id through MS REST API|**Yes**
+|11.| check current active transfers through MS REST API|**Yes**
+|12.| create a new portal through MS REST API|**Yes**
+|13.| set user roles or persmission through MS|**Yes**
+|14.| storage replication/backup feature |**`No`**
+
+## Trend Download & Upload
+---
+
+| S.No | Type     | Size   | Mode            | Duration (Minutes) |
+| ---- | -------- | ------ | --------------- | ------------------ |
+| 1.   | Upload   | 250 Mb | Without - Agent | 0:02:17            |
+| 2.   | Upload   | 250 Mb | With - Agent    | 0:01:44            |
+| 3.   | Upload   | 3.5 Gb | Without - Agent | 0:22:01            |
+| 4.   | Upload   | 3.5 Gb | With - Agent    | 0:20:01            |
+| 5.   | Download | 250 Mb | Without - Agent | 0:03:17            |
+| 6.   | Download | 250 Mb | With - Agent    | 0:02:17            |
+| 7.   | Download | 3.5 Gb | Without - Agent | 0:14:50            |
+| 8.   | Download | 3.5 Gb | With - Agent    | 0:14:01            |
+
+## Pros
+---
+- user-friendly upload and download interface
+- process webhook for process status
+- the unlimited size of upload
+- on-premises and cloud datastore
+
+## Cons
+---
+- The download with and without the app(agent) are comparatively equal
+- The upload with and without the app(agent) are comparatively equal
+- Cannot upload/download a file on the Linux platform
+- In case of failure, the fallback process has to think and plan
+- there is no direct API for copying a file from one folder to another. If we want, have to go for a jet workflow system.
+- Replication/backup information not available
+
+
+## Conclusion
+---
+
+As per the report, MS has scored 57% for the usecases, and rest of 43% the part we have to plan for alternative approach. Though it has some upsides it is also have more downsides. Some of Major feature does not available on REST API. Trend of Download and upload with with-agent and without-agent are not impressive both are looking  same. So, I recommend we will go for local FileSysten service.  
+
+---
 ---
 
 ## Exercises
@@ -114,50 +174,8 @@ The **Ames smart flow process** automation, Planned directory structuring, API i
 **Point 7** copy folder to folder
 
 > No, there is no rest API found for folder copy
-> but, can do it by manually.
+> but, can do it manually.
 
 **Import:**
 
-1. have to associate files into a `package-id`.Then can share these files at in download link
-
-## Overall Result
-
-| S.No | Task                                                             | Status    |
-| ---- | ---------------------------------------------------------------- | --------- |
-| 1.   | able to upload files and folders by manual                       | **Yes**   |
-| 2.   | able to download files and folders by manual                     | **Yes**   |
-| 3.   | able to upload files and folders by automation                   | **Yes**   |
-| 4.   | able to download files and folders by automation                 | **Yes**   |
-| 5.   | able to do versioning on each upload either manual or automation | **` No`** |
-| 6.   | able to check upload process completion state                    | **Yes**   |
-| 7.   | able to copy/move files or folders one to another                | **Yes**   |
-| 8.   | able to transfer file within system through REST API             | **` No`** |
-| 9.   | able to register a user/email through REST API                   | **Yes**   |
-| 10.  | able to check history of package id through REST API             | **Yes**   |
-| 11.  | able to check current active transfers through REST API          | **Yes**   |
-| 12.  | able to create a new portal through REST                         | **Yes**   |
-| 13.  | able to set user rols or persmission                             | **Yes**   |
-
-## Download and Upload Status
-
-| S.No | Type     | Size   | Mode            | Duration (Minutes) |
-| ---- | -------- | ------ | --------------- | ------------------ |
-| 1.   | Upload   | 250 Mb | Without - Agent | 0:02:17            |
-| 2.   | Upload   | 250 Mb | With - Agent    | 0:01:44            |
-| 3.   | Upload   | 3.5 Gb | Without - Agent | 0:22:01            |
-| 4.   | Upload   | 3.5 Gb | With - Agent    | 0:20:01            |
-| 5.   | Download | 250 Mb | Without - Agent | 0:03:17            |
-| 6.   | Download | 250 Mb | With - Agent    | 0:02:17            |
-| 7.   | Download | 3.5 Gb | Without - Agent | 0:14:50            |
-| 8.   | Download | 3.5 Gb | With - Agent    | 0:14:01            |
-
-## Conclusion
-
-The download and upload rates not very huge differences.
-
-**Note:**
-
-- email not received even shared to upload request.
-- cannot create a folder as we discussed in the plan
-- cannot create a link more than once for a packageId
-- cannot upload a file on the Linux platform. Due to there being no signiant app for Linux
+1. have to associate files into a `package-id`.Then we can share these files in the download link
