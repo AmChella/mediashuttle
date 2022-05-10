@@ -1,11 +1,13 @@
 ## POC - Media Shuttle
 
 ## Overview
+
 ---
 
 **AmES smartflow** automation requires a common datastore (S3 or Shared File System). Interaction with this data store is paramount for its success. We need auto file copy when user travels between processes, file/folder level permission control, upload/download while working on a specific task in the workflow. S3 as a datastore was ruled out due to high cost of operation, although its a lot faster than local file copy over network. Mediashuttle (MS) along with network file copy is being used by production users. It supports LocalFileSystem and cloud services and it accelarates file copy over the netowrk. In this exercise, we will test if MS is faster than local file copy over the network. We will also test out MS's Restful APIs.
 
 ## Areas tested
+
 ---
 
 1. upload files and folders manually
@@ -13,37 +15,39 @@
 3. upload files and folders through MS restful API integration
 4. download files and folders through MS restful API integration
 5. versioning of files on each upload
-6. track upload/download progress through MS API 
+6. track upload/download progress through MS API
 7. copy/move files or folders as a background activity through MS API
 8. transfer file within system through MS REST API
 9. register a user/email through MS REST API
-1. check history of a package id through MS REST API
-1. check current active transfers through MS REST API
-1. create a new portal through MS REST API
-1. set user roles or persmission through MS
-1. storage replication/backup feature 
+10. check history of a package id through MS REST API
+11. check current active transfers through MS REST API
+12. create a new portal through MS REST API
+13. set user roles or persmission through MS
+14. storage replication/backup feature
 
 ## Result
+
 ---
 
-| S.No | Task                                                             | Status    |
-| ---- | ---------------------------------------------------------------- | --------- |
-|1. |upload files and folders manually | **Yes**
-|2. |download files and folders manually|**Yes**
-|3. |upload files and folders through MS restful API integration|**`No`**
-|4. |download files and folders through MS restful API integration|**`No`**
-|5. |versioning of files on each upload|**`No`**
-|6. |track upload/download progress through MS API |**Yes**
-|7. |copy/move files or folders as a background activity through MS API|**`No`**
-|8. |transfer file within system through MS REST API|**`No`**
-|9. |register a user/email through MS REST API|**Yes**
-|10.| check history of a package id through MS REST API|**Yes**
-|11.| check current active transfers through MS REST API|**Yes**
-|12.| create a new portal through MS REST API|**Yes**
-|13.| set user roles or persmission through MS|**Yes**
-|14.| storage replication/backup feature |**`No`**
+| S.No | Task                                                               | Status   |
+| ---- | ------------------------------------------------------------------ | -------- |
+| 1.   | upload files and folders manually                                  | **Yes**  |
+| 2.   | download files and folders manually                                | **Yes**  |
+| 3.   | upload files and folders through MS restful API integration        | **`No`** |
+| 4.   | download files and folders through MS restful API integration      | **`No`** |
+| 5.   | versioning of files on each upload                                 | **`No`** |
+| 6.   | track upload/download progress through MS API                      | **Yes**  |
+| 7.   | copy/move files or folders as a background activity through MS API | **`No`** |
+| 8.   | transfer file within system through MS REST API                    | **`No`** |
+| 9.   | register a user/email through MS REST API                          | **Yes**  |
+| 10.  | check history of a package id through MS REST API                  | **Yes**  |
+| 11.  | check current active transfers through MS REST API                 | **Yes**  |
+| 12.  | create a new portal through MS REST API                            | **Yes**  |
+| 13.  | set user roles or persmission through MS                           | **Yes**  |
+| 14.  | storage replication/backup feature                                 | **`No`** |
 
 ## Trend Download & Upload
+
 ---
 
 | S.No | Type     | Size   | Mode            | Duration (Minutes) |
@@ -58,14 +62,18 @@
 | 8.   | Download | 3.5 Gb | With - Agent    | 0:14:01            |
 
 ## Pros
+
 ---
+
 - user-friendly upload and download interface
 - process webhook for process status
 - the unlimited size of upload
 - on-premises and cloud datastore
 
 ## Cons
+
 ---
+
 - The download with and without the app(agent) are comparatively equal
 - The upload with and without the app(agent) are comparatively equal
 - Cannot upload/download a file on the Linux platform
@@ -73,13 +81,14 @@
 - there is no direct API for copying a file from one folder to another. If we want, have to go for a jet workflow system.
 - Replication/backup information not available
 
-
 ## Conclusion
----
-
-As per the report, MS has scored 57% for the usecases, and rest of 43% the part we have to plan for alternative approach. Though it has some upsides it is also have more downsides. Some of Major feature does not available on REST API. Trend of Download and upload with with-agent and without-agent are not impressive both are looking  same. So, I recommend we will go for local FileSysten service.  
 
 ---
+
+As per the report, MS has scored 57% for the usecases, and rest of 43% have to plan go for alternative approach. Though it has some upsides it is also have more downsides. Some of Major feature does not available on REST API. Trend of Download and upload with with-agent and without-agent are not impressive both are looking same. So, I recommend we will go for local FileSysten service.
+
+---
+
 ---
 
 ## Exercises
