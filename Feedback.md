@@ -77,9 +77,22 @@
 ## Conclusion
 ---
 
-As per the report, MS has scored 57% for the usecases, and rest of 43% the part we have to plan for alternative approach. Though it has some upsides it is also have more downsides. Some of Major feature does not available on REST API. Trend of Download and upload with with-agent and without-agent are not impressive both are looking  same. So, I recommend we will go for local FileSysten service.  
-
+As per the report, MS has scored `57%` for the use-cases, and the rest of `43%` has to plan for alternatives. Though it has some upsides, it also has more important downsides. Some of the Major features does not available on REST API. The trend of Download and upload with with-agent and without-agent are not impressive and both are looking the same. 
+## Decision
 ---
+
+Based on the analysis, I recommend for a local Datastore.
+
+
+
+### Development required
+The below developments are required in order to achieve local Datastore.
+1. independent FileSystem Service. 
+   - Module for files listing
+   - Module for file writing
+   - Module for file reading
+   - Modules for operations like copy, move and delete
+
 ---
 
 ## Exercises
